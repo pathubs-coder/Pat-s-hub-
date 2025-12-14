@@ -5564,7 +5564,7 @@ local function createGui()
             Position = UDim2.new(1, -80, 0, 15),
             BackgroundColor3 = COLORS.Purple,
             BackgroundTransparency = 0.2,
-            Text = ";)",
+            Text = "Toggle",
             TextColor3 = COLORS.Text,
             TextSize = 28,
             Font = Enum.Font.GothamBold,
@@ -5671,7 +5671,7 @@ local function createGui()
     Instance.new("UICorner", tabBar).CornerRadius = UDim.new(0, 10)
     
     local tabButtons = {}
-    local tabNames = { "Brainrots", "Priority", "Tuff :3", "Stats" }
+    local tabNames = { "Brainrots", "Priority", "Main tab", " Your Stats" }
     local tabIds = { "animals", "favorites", "actions", "stats" }
     
     local numTabs = #tabNames
