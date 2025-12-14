@@ -5425,16 +5425,7 @@ local function createGui()
     overlay.ZIndex = 999999999999999
     overlay.Parent = screenGui
     
-    Instance.new("UICorner", overlay).CornerRadius = UDim.new(0, 10)
-    
-    -- Add UIScale for responsive scaling (only for mobile/tablet)
-    local overlayScale
-    if isMobile or isTablet then
-        overlayScale = Instance.new("UIScale")
-        overlayScale.Scale = globalScale
-        overlayScale.Parent = overlay
-    end
-    
+  end 
     
 
     mainFrame = createElement("Frame", {
@@ -5482,7 +5473,7 @@ local function createGui()
             Position = UDim2.new(1, -80, 0, 15),
             BackgroundColor3 = COLORS.Purple,
             BackgroundTransparency = 0.2,
-            Text = ";)",
+            Text = "Toggle",
             TextColor3 = COLORS.Text,
             TextSize = 28,
             Font = Enum.Font.GothamBold,
