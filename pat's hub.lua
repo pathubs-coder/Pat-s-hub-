@@ -5425,8 +5425,99 @@ local function createGui()
     overlay.ZIndex = 999999999999999
     overlay.Parent = screenGui
     
-  end 
+    Instance.new("UICorner", overlay).CornerRadius = UDim.new(0, 10)
     
+    -- Add UIScale for responsive scaling (only for mobile/tablet)
+    local overlayScale
+    if isMobile or isTablet then
+        overlayScale = Instance.new("UIScale")
+        overlayScale.Scale = globalScale
+        overlayScale.Parent = overlay
+    end
+    
+    local titleSize = isMobile and 18 or (isTablet and 22 or 24)
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1, 0, 0, 22)
+    title.Position = UDim2.new(0, isMobile and 15 or (isTablet and 20 or 95), 0, 5)
+    title.BackgroundTransparency = 1
+    title.Text = "Pat's hub | V3"
+    title.Font = Enum.Font.GothamBold
+    title.TextSize = titleSize
+    title.TextColor3 = COLORS.Purple
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.TextScaled = isMobile
+    title.ZIndex = 999999999999999
+    title.Parent = overlay
+    applyTitanzTextStyle(title)
+    makeTextGlow(title, Color3.fromRGB(255, 140, 255), Color3.fromHSV(0.578947, 0.298039, 1.000000), 1.2, 0)
+    addTextGradient(title, Color3.new(0.815686, 0.305882, 1.000000), Color3.fromHSV(0.578947, 0.298039, 1.000000), 45)    
+
+    local subSize = isMobile and 14 or (isTablet and 18 or 20)
+    local sub = Instance.new("TextLabel")
+    sub.Size = UDim2.new(1, 0, 0, 18)
+    sub.Position = UDim2.new(0, 15, 0, isMobile and 28 or (isTablet and 29 or 30))
+    sub.BackgroundTransparency = 1
+    sub.Text = "https://discord.gg/vEnDbGraJh"
+    sub.Font = Enum.Font.Gotham
+    sub.TextSize = subSize
+    sub.TextColor3 = COLORS.Pink
+    sub.TextXAlignment = Enum.TextXAlignment.Left
+    sub.TextScaled = isMobile
+    sub.ZIndex = 999999999999999
+    sub.Parent = overlay
+    applyTitanzTextStyle(sub)
+    makeTextGlow(sub, Color3.fromRGB(255, 140, 255), Color3.fromRGB(180, 220, 255), 1.2, 0.3)
+    addTextGradient(sub, Color3.new(0.815686, 0.305882, 1.000000), Color3.fromHSV(0.578947, 0.298039, 1.000000), 45)    
+    
+    local infoSize = isMobile and 14 or (isTablet and 16 or 18)
+    local info = Instance.new("TextLabel")
+    info.Size = UDim2.new(1, -10, 0, 20)
+    info.Position = UDim2.new(0, isMobile and 15 or (isTablet and 20 or 80), 0, isMobile and 48 or (isTablet and 50 or 53))
+    info.BackgroundTransparency = 1
+    info.Font = Enum.Font.GothamBold
+    info.TextSize = infoSize
+    info.TextColor3 = COLORS.Cyan
+    info.TextXAlignment = Enum.TextXAlignment.Left
+    info.TextScaled = isMobile
+    info.ZIndex = 999999999999999
+    info.Parent = overlay
+    applyTitanzTextStyle(info)
+    
+    local frames = 0
+    local last = tick()
+    
+    S.RunService.RenderStepped:Connect(function()
+        frames += 1
+        local now = tick()
+        if now - last >= 1 then
+            local fps = frames
+            frames = 0
+            last = now
+            
+            local rawPing = S.Stats.Network.ServerStatsItem["Data Ping"]:GetValue()
+            local ping = math.floor(rawPing + 0.5)
+            
+            info.Text = "FPS: " .. fps .. "    PING: " .. ping .. "ms"
+        end
+    end)
+    
+    -- Calculate default position
+    local defaultPos
+    if CONFIG.GUI_POSITION_X and CONFIG.GUI_POSITION_Y then
+        -- Use saved position if available
+        print("[GUI] Loading saved position:", CONFIG.GUI_POSITION_X, CONFIG.GUI_POSITION_Y)
+        defaultPos = UDim2.new(0, CONFIG.GUI_POSITION_X, 0, CONFIG.GUI_POSITION_Y)
+    else
+        -- Use default position based on device
+        print("[GUI] No saved position, using default")
+        if isMobile then
+            defaultPos = UDim2.new(0.5, -mainWidth/2, 0.6, -mainHeight/2)
+        elseif isTablet then
+            defaultPos = UDim2.new(0.5, -mainWidth/2, 0.55, -mainHeight/2)
+        else
+            defaultPos = UDim2.new(0, 1200, 0, 0)
+        end
+    end
 
     mainFrame = createElement("Frame", {
         Name = "MainFrame",
@@ -5473,7 +5564,7 @@ local function createGui()
             Position = UDim2.new(1, -80, 0, 15),
             BackgroundColor3 = COLORS.Purple,
             BackgroundTransparency = 0.2,
-            Text = "Toggle",
+            Text = ";)",
             TextColor3 = COLORS.Text,
             TextSize = 28,
             Font = Enum.Font.GothamBold,
